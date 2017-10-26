@@ -1,0 +1,28 @@
+35L Lab 9 Homework Questions
+Manas Kumar
+004580689
+
+1.
+If an opposing team could snoop on all the bytes sent and recieved over the 
+network, the connection would still be secure. This is because the information
+that they could recover would be encrypted with the receiver's public key, and
+could only be decrypted with that person's own private key.
+
+However, if the opposing team was able to install a keylogger on our keyboards,
+they might be able to unencrypt this information because the keylogger would
+give them the password we set in the beggining of the lab that acted as the
+authentication private key. This would allow them to create a session key for
+themselves.
+
+Finally, if the opposing team had access to the USB connection used to boot up
+Ubuntu, they would have access to all the files in Ubuntu. This would include 
+the .ssh files we created when we set up our server, and these files include
+the public and private keys that were used for creating the authentication and
+sessions keys. These keys would allow them to decrypt any information sent to
+or from the server.
+
+2.
+The "gpg --verify" command doesn't verify the original owner of the tar file.
+Instead, it only can compare the cleartext signature using the public key. This
+signature can probably be forged or changed once the file is created. To solve
+this, we can maintain a separate database of files and their original authors.

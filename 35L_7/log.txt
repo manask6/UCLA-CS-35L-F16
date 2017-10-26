@@ -1,0 +1,46 @@
+CS 35L Lab 7 Log
+Manas Kumar
+004580689
+
+First, used "sort --version" command and found that we have coreutils 8.25.
+
+Then, we make the file with 10,000,000 doubles:
+Just using the od command won't be enough, since this won't put all the 
+numbers on separate lines or get rid of the parts that aren't numbers.
+Thus, we get:
+od -tf -N 80000000 < /dev/urandom 
+	| sed 's/^[0-9]* *//' 
+	| tr -s ' ' '\n' > ./test.txt
+
+The -N 80000000 is for 80000000 bytes which makes 10000000 doubles.
+The tr portion replaces spaces with newlines.
+The sed part removes any number that is only numerals and has no . or +.
+
+Now we use time -p to time the sort command on this data.
+We'll do this with the --parallel option set to off, 1, 2, 4, and 8:
+
+time -p sort -g test.txt > /dev/null
+real 34.70
+user 195.86
+sys 0.52
+
+time -p sort -g --parallel=1 test.txt > /dev/null
+real 183.81
+user 183.68
+sys 0.23
+
+time -p sort -g --parallel=4 test.txt > /dev/null
+real 96.74
+user 184.96
+sys 0.39
+
+time -p sort -g --parallel=8 test.txt > /dev/null
+real 35.11
+user 194.85
+sys 0.51
+
+Using --parallel=8 gives us the best real time, but not necesarilly the best
+user or sys times, compared to the other --parallel setitngs. This real time
+is very close to that from the first command where --parallel is not invoked.
+This suggests that the default behaviour of sort is to set parallel
+to 8 to take advantage of multiple cores.

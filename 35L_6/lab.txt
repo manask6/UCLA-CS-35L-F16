@@ -1,0 +1,80 @@
+35L Lab 6 Report
+Manas Kumar
+004580689
+
+Objective: Make two c programs that take byte strings of same length and 
+transliterates every byte from "from" to the corresponding "to" variable.
+One uses buffered I/O and the other uses unbuffered. No options, no special
+character exceptions.
+
+Both programs have the same structure:
+- Check for right # of arguments
+- Check arguments are same length
+- Check "from" argument for duplicate bytes
+- Get char from input
+- Check if char is in "from"
+- If it is, put the corresponding char from "to" into output
+- If it isn't, put the same char into output
+- Try again for next char
+
+To make the tr2u.c program, I took my code from tr2b.c and replaced the first
+getchar with a read and the putchars with a write. The char variable c that I
+used to get each succesive char from input had to be changed into a
+one-dimensional array.
+
+Then I ran strace and time on the two programs. This time instead of using 
+small test files, I used a random text generator to create text with about 4000
+characters, and I copied and pasted that many times into bigtest.txt, which
+became over 8,000,000 bytes in size (close enough).
+
+The command "strace -o output ./a.out abcd 1234 < bigtest.txt" runs whatever
+program is compiled into a.out on bigtest.txt and puts the output into standard
+output. It also lists all the system calls made and puts that into a file named
+"output".
+Running this command for tr2b.c made an output file with 12085 lines.
+Running this command for tr2u.c made an output file with 9854750 lines.
+
+The command "strace -o output ./a.out abcd 1234 < bigtest.txt > results.txt"
+runs whatever program is compiled into a.out on bigtest.txt and puts the 
+output into results.txt. It also lists all the system calls made and puts 
+that into a file named "output".
+Running this command for tr2b.c made an output file with 182 lines.
+Running this command for tr2u.c made an output file with 9854750 lines.
+
+I also used the time command to determine how long both programs take to run
+with these two output conditions:
+
+Running the command "time ./a.out abcd 1234 < bigtest.txt" gives...
+
+real    0m1.366s
+user    0m0.166s
+sys     0m0.035s	when a.out is compiled from tr2b.c
+
+real    0m5.048s
+user    0m0.301s
+sys     0m4.648s	when a.out is compiled from tr2u.c
+
+Running the command "time ./a.out abcd 1234 < bigtest.txt > results.txt" gives
+
+real    0m0.191s
+user    0m0.121s
+sys     0m0.002s	when a.out is compiled from tr2b.c
+
+real    0m6.054s
+user    0m0.306s
+sys     0m5.682s	when a.out is compiled from tr2u.c
+
+
+Clearly the program that uses buffered I/O is much faster. To see why this is,
+we can look at what buffered I/O actually acomplishes: tr2u.c works by reading
+and writing character by character, whereas tr2b.c reads entire blocks of
+chars and places them in an easy-to-read buffer. This buffering means the 
+program doesn't have to go back and forth between memory very frequently,
+a very costly procedure time-wise. 
+
+We also notice that tr2b.c takes longer when it writes its output to standard
+output rather than to a file. This is because copying a character to the 
+terminal is a bit more costly than copying it to a file that's not actively 
+being displayed. Nevertheless, it still handily defeats tr2u.c.
+
+

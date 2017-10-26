@@ -1,0 +1,51 @@
+CS 35L Lab 9 Log
+Manas Kumar
+004580689
+Partner: Hana Kim (acting as server)
+
+First, we both booted up Ubuntu, since doing this lab on the SEASnet servers
+without root access would be a bad idea.
+
+Then we made sure we had the needed openssh files with the command:
+dpkg --get selections | grep openssh
+
+It turns out we didn't, so we got them with the commands:
+sudo apt-get install openssh-server
+sudo apt-get install openssh-client
+
+Next, Hana started setting up the server. She used the command "ssh-keygen"
+to generate her public and private keys for encryption. Then she made an
+account for me to access her server with the commands:
+sudo useradd -d /home/manas -m hana
+sudo passwd hana
+
+At this point, she made a directory named "manas" for me to access with the
+username "hana" and the password "hana".
+
+After this she created a .ssh directory in the directory "manas" to store the 
+RSA encrypction keys with the following commands:
+cd /home/manas
+sudo mkdir .ssh
+sudo chown -R hana .ssh
+sudo chmod 700 .ssh
+
+Those last two commands allowed me to add or edit any files in the "manas"
+folder by making me the owner.
+
+Next, I generated my public and private keys with the "ssh-keygen" command,
+and I copied my public key to the server and added my private key to the
+authentication agent with the commands:
+ssh-copy-id -i hana@[server ip]
+ssh-add
+
+The [server ip] part in that first command was the Hana's ip address that was
+taken from the "ifconfig" command.
+
+After all this, I logged on to Hana's server with the command:
+ssh -X hana@[server ip]
+
+To test my connection, I tried to open firefox through the server with the 
+"firefox" command and it worked.
+
+We switched places as server and client and did the process quickly once more,
+pretty much doing everything described above.

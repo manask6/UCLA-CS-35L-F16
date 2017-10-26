@@ -1,0 +1,104 @@
+35L Homework 6 sfrob performance test
+Manas Kumar
+004580689
+
+At this point we have three sfrob programs, a c program that uses buffered I/O
+(sfrob), a c program that uses unbuffered I/O (sfrobu), and a shell script that
+uses standard tr and sort commands (sfrobs).
+
+These programs' performances were tested with the time command. Specifically
+and respectivley, they were tested with:
+time ./sfrob < bigtest.txt
+time ./sfrobu < bigtest.txt
+time ./sfrobs < bigtest.txt
+
+Here, bigtest.txt contains random english words and punctuation. Each line has
+roughly 430 characters. To get a good estimate of how line number affects the
+number of comparisons, I used the above three commands when the file had 10
+lines, 100 lines, 500 lines, and 1000 lines:
+
+
+---bigtest.txt with 10 lines:
+-sfrob
+real    0m0.011s
+user    0m0.000s
+sys     0m0.002s
+-sfrobu
+Comparisons: 5412
+real    0m0.007s
+user    0m0.001s
+sys     0m0.002s
+-sfrobs
+real    0m0.014s
+user    0m0.004s
+sys     0m0.008s
+
+---bigtest.txt with 100 lines:
+-sfrob
+real    0m0.009s
+user    0m0.007s
+sys     0m0.000s
+-sfrobu
+Comparisons: 75758
+real    0m0.045s
+user    0m0.005s
+sys     0m0.018s
+-sfrobs
+real    0m0.026s
+user    0m0.015s
+sys     0m0.010s
+
+---bigtest.txt with 500 lines:
+-sfrob
+real    0m0.118s
+user    0m0.027s
+sys     0m0.003s
+-sfrobu
+Comparisons: 454646
+real    0m0.169s
+user    0m0.024s
+sys     0m0.085s
+-sfrobs
+real    0m0.201s
+user    0m0.079s
+sys     0m0.013s
+
+---bigtest.txt with 1000 lines:
+-sfrob
+real    0m0.185s
+user    0m0.053s
+sys     0m0.005s
+-sfrobu
+Comparisons: 975038
+real    0m0.295s
+user    0m0.047s
+sys     0m0.173s
+-sfrobs
+real    0m0.270s
+user    0m0.170s
+sys     0m0.015s
+
+
+Key observations:
+sfrob always has a considerably lower sys time. This is likely because its
+use of buffered I/O keeps it from spending too much time in kernel mode and
+making too many syscalls.
+On the other end, sfrobu has significantly higher sys times for the
+opposite reason.
+sfrobs, the shell script, has real times that are just as slow or slower than
+even sfrobu. This is because shell scripts are interpreted, not compiled, and
+sfrobs has a lot of piping, meaning it passes the input between different 
+commands that can't execute in parallel.
+
+The output for sfrobu includes a "Comparisons" line that shows how many times
+frobcmp is called. We can use these numbers to calculate the average
+comparisons made per input line:
+
+10 lines	100 lines	500 lines	1000 lines
+5412 comps	75758 comps	454646 comps	975038 comps
+
+Using Wolfram Alpha, I found that these points, when plotted and linearly
+regressed, form a line with a slope of 971.615.
+This gives us the following relationship:
+
+numberOfComparisons = 971.615*numberOfLines
