@@ -1,0 +1,14 @@
+Lab 4 Log
+Manas Kumar 004580689
+
+cd ~eggert/src/gnu/diffutils	to get to difutils directory
+git log > ~/35L_Assignment4/git-log.txt	  to export git log to file
+git tag > ~/35L_Assignment4/git-tags.txt  to export git tags to file
+
+commit 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f
+Author: Paul Eggert <eggert@cs.ucla.edu>
+Date:   Wed Jan 25 23:46:16 2012 -0800
+
+maint: quote 'like this' or "like this", not `like this'
+
+// Use git show

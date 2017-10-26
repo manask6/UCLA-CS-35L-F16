@@ -1,0 +1,15 @@
+2016-10-22  Manas Kumar  <kumar@lnxsrv06.seas.ucla.edu>
+
+	* util.c: Replaced use of grave accent (`) as a quoting character with use of apostrophe (')
+
+        * sdiff.c: Replaced use of grave accent (`) as a quoting character with use of apostrophe (')
+
+        * dir.c: Replaced use of grave accent (`) as a quoting character with use of apostrophe (')
+
+        * diff3.c: Replaced use of grave accent (`) as a quoting character with use of apostrophe (')
+
+        * diff.c: Replaced use of grave accent (`) as a quoting character with use of apostrophe (')
+
+        * cmp.c: Replaced use of grave accent (`) as a quoting character with use of apostrophe (')
+
+

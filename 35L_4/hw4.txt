@@ -1,0 +1,29 @@
+Homework 4 Log
+Manas Kumar 004580689
+Partner: Hana Kim 204478394
+
+## Create new branch of v3.0 and patch it ##
+git checkout v3.0 -b quote	to create new branch
+patch -p1 < ../quote-3.0-patch.txt	to patch
+
+## Create changelog and formatted patch ##
+git status	to show 6 c files that were patched
+For each c file:
+-Open with emacs
+-C-x 4 a to open changelog and type a blurb about the changes
+git add .	
+git commit -F ChangeLog	  to commit
+git format-patch -1 --stdout > ../formatted-patch.txt
+Now we have a formatted-patch.txt
+
+## Apply partner's patch ##
+Partner  emailed me her patch
+git am < formatted-patchHANA.txt
+git log	   to verify patch by seeing changelog
+./bootstrap
+./configure
+make
+make check
+make distdir	to build executable and make changelog directory
+
+Compared created changelog and it had same output as the other one

@@ -1,0 +1,88 @@
+Lab 4 Log
+Manas Kumar 004580689
+
+## Prepare files ##
+cd ~eggert/src/gnu/diffutils	to get to difutils directory
+Used cp to copy diffutils into assignment folder
+(Assignment folder has answer files and the diffutils folder,
+	so the answer files are one directory above diffutils)
+
+
+## Extract log and tags ##
+git log > ../git-log.txt	to export git log to file
+git tag > ../git-tags.txt	to export git tags to file
+
+
+## Apply quote patch to 3.0 ##
+open git-logs.txt in emacs and use C-s to find the commit that changes quotes
+Commit has ID: 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f
+
+git show 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f > ../quote-patch.txt
+	to create the patch file
+git checkout v3.0 	to switch to version 3.0
+output is "HEAD is now at 022cd5c... version 3.0"
+
+patch -p1 < quote-patch.txt	to apply the quote patch
+patching process requires hitting ENTER a few times to skip certain files
+output at end describes many hunks succeeding
+
+git status	to show effect of patch
+output list all ~20 files that were modified and ~20 untracked files
+	also says "no changes added to commit"
+
+
+## Learn about emacs commands ##
+In emacs, vc-diff compares two versions of a file and is C-x v =
+In emacs, vc-revert reverts changes made to a file and is C-x v u
+In emacs, diff-apply hunk applies a hunk to a target file and is C-c C-a
+
+
+## Revert unnecessary changes ##
+For each modified file that's not a c file:
+- Open it in emacs
+- C-x v =	to get diff file
+- C-x v u	to revert changes
+
+For each c file:
+- Open in emacs
+- C-x v =	to get diff file
+- C-u C-c C-a 	to undo hunks
+Only reverted hunks are ones that change comments and not code.
+
+For each .c.rej file in the /src directory:
+- Look at rejected changes and if they're applicable, 
+	manually implement them
+
+
+## Get rid of unnecessary files ##
+git clean -f	to remove untracked files (6 files)
+
+
+## Create patch for 3.0 ##
+git diff > ../quote-3.0-patch.txt
+Creates patch file 335 lines long.
+
+
+## Apply 3.0 patch ##
+./bootstrap
+Applied "gets" patch from assignment.
+./configure
+make
+make check
+
+
+## Test modified diff ##
+diff . -
+diff --help
+	both commands use ' instead of `
+
+Take src folder and add and commit to a new branch
+git checkout v3.0	to get back to old version of 3.0
+git log		to show no changes
+Copy this old version's src file
+diffutils-3.0-patch/diff -pru diffutils-3.0 diffutils-3.0-patch 
+	>quote-3.0-test.txt	to create a comparison file
+diff qutoe-3.0-test.txt quote-3.0-patch.txt
+
+Once again, we see the differences of ' and `
+These differences are innocuous, as they do not change the behaviour of diff

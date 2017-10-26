@@ -1,0 +1,14 @@
+GITK Description
+Manas Kumar 004580689
+
+The window in the top left shows the history of all previous commits as
+a branching tree diagram.
+
+To the right of that is a list of the authors of each commit and the
+date the commit was commited.
+
+Below all this and to the right is a list of files that are ascociated with
+the selected commit.
+
+Finally, the big window at the bottom left shows the file changes
+in a diff file format. 
