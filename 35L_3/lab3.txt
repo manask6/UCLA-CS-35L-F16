@@ -1,0 +1,20 @@
+Assignment 3 Lab Log
+Manas Kumar 004580689
+
+First, used wget to get the Coreutils tarball using link from assignment page.
+Then, used tar -xvzf to unzip it.
+Then, read INSTALL file.
+Then, used ./configure --prefix=/u/cs/ugrad/kumar/coreutilsInstall
+Used make and make install commands to fully install coreutils.
+
+Went to ~/coreutilsInstall/bin folder and tried that folder's ls -l command.
+Command produced dates in YYYY-MM-DD format,
+	whereas normal ls command produced them in Month Day YYYY format.
+	(commands used were ls and ./ls)
+Created PATCH file in coreutils-7.6 and copied text from assignment into file
+Used patch -p1 < ./PATCH command, Hunk #1 and Hunk#2 succeeded
+
+Tried coreutil's ls command again, got Month Day YYYY format.
+This ls command does not color code files.
+Used touch -d '1 May 2005 10:22' ./yes to make yes file old.
+Coreutil's ls command shows year instead of time for files older than one year.

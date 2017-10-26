@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep -o -E '*<td>.*</td>' e2h.html | sed 's/<[^>]*>//g' | sed 's/(.*)//g' | sed '/^\s*$/d' | sed -n '1~2!p' | sed 's/'\`'/'\''/g' | sed 's/'\,'//g' | tr " " "\n" | sort -u -f | tail -n +2 | tr '[:upper:]' '[:lower:]' | sed '/[pk'\''mnwlhaeiou]/!d'

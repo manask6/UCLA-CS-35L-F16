@@ -1,0 +1,52 @@
+Assignment 2 Lab Log
+Manas Kumar 004580689
+
+First step: fix LC_CTYPE with export command as described in assignment
+Then: use sort /usr/share/dict/words > ./words.txt to get sorted words.txt
+
+Used wget to get html copy of assignment page
+
+
+tr -c 'A-Za-z' '[\n*]' < Assignment2.html
+-This command displays all words in the html file that have english letters in them in the order they appear
+
+tr -cs 'A-Za-z' '[\n*]' < Assignment2.html
+-This command does the same thing but repeated entries are not shown
+
+tr -c 'A-Za-z' '[\n*]' < Assignment2.html | sort
+-This command does the same as before but displays entries in alphabetical order
+
+tr -c 'A-Za-z' '[\n*]' < Assignment2.html | sort -u
+-This command does the same but only shows the first entry in an "equal run"
+
+tr -c 'A-Za-z' '[\n*]' < Assignment2.html | sort -u | comm - words
+-This command compares the output of above with the "words" file line by line
+
+tr -c 'A-Za-z' '[\n*]' < Assignment2.html | sort -u | comm -23 - words
+-This command displays all words in the html file (after being sorted) that don't appear in the words file
+
+
+Used wget to get html copy of English to Hawaiian webpage
+Used following shell script to properly sort and arrange Hawaiian words:
+
+#!/bin/bash
+
+grep -o -E '*<td>.*</td>' e2h.html	// Takes all words between <td> HTML flags	
+| sed 's/<[^>]*>//g'			// Removes all HTML tags
+| sed 's/(.*)//g'			// Removes everything in parenthesis
+| sed '/^\s*$/d'			// Removes unecessary spaces
+| sed -n '1~2!p'			// Removes every other line
+| sed 's/'\`'/'\''/g'			// Changes ` to '
+| sed 's/'\,'//g'			// Removes all commas
+| tr" " "\n"				// Replaces all spaces with newlines
+| sort -u -f				// Sort alphabetically, no repeats
+| tail -n +2				// First line was showing up as blank, so remove it
+| tr '[:upper:]' '[:lower:]'		// Change everything to lowercase
+| sed '/[pk'\''mnwlhaeiou]/!d'		// Remove any non-Hawaiian words
+
+
+Used buildwords script to spellcheck webpage like so:
+tr -cs 'A-Za-z' '[\n*]' <Assignment2.html | sort -u | comm -23 - ./buildwords
+
+Found words like "you" "want" and "save" that were English but not Hawaiian
+Found words like "halau" and "kula" that were Hawaiian but not English

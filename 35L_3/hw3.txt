@@ -1,0 +1,19 @@
+Manas Kumar 004580689
+hw3.txt
+
+1. The line above "case_long_iso_time_style:", is not needed because of the line
+   "case long_iso_time_style:" right above it.
+
+2. The Brady patch messes with localization and thus would make reading dates
+   confusing for people not used to English-format dates. Also if there is any
+   software out there that relies on the numeric date format, it will not work
+   with this patch installed.
+
+3. When randline.py is invoked on an empty file, we get the error,
+   "IndexError: list index out of range" beacuse the random.choice function expects
+   at least on item in the list. Accessing an item at any index from a list of 0 items
+   is impossible to resolve.
+
+4. On python 3, this same script when invoked gives an invalid syntax error for line 65.
+   Simply put, this is because python 3 has a different syntax than python 2 and the
+   comma notation used doesn't work.

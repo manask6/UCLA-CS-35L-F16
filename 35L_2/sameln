@@ -1,0 +1,35 @@
+#!/bin/bash
+#sameln
+
+directory=$1
+files=$directory*
+
+n=0
+
+for f in $files
+do
+    array[$n]=$f
+    n=$(($n+1))
+done
+    
+for (( x=0; x<$n; ++x ))
+do
+    if [ -f "$array[$x]" ]
+    then
+
+	for((y=0; y<$n; y++))
+        do
+
+	    if [ -f "$array[$y]" ]
+            then
+
+		test[cmp -s ${array[$x]} ${array[$y]}]
+                [ln ${array[$x]} ${array[$y]}]
+            fi
+        done
+    fi
+done
+
+
+#I'm not sure why this doesn't work,
+#The array fills up with only the first file in the list
